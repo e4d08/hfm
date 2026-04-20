@@ -6,6 +6,22 @@
 #include <stdlib.h>
 #include <string.h>
 
+static void huffman_tree_copy(HuffmanTree* dest, HuffmanTree* tree)
+{
+    if (tree == NULL) {
+        return;
+    }
+    memcpy(dest, tree, sizeof(*dest));
+    if (tree->left_child != NULL) {
+        dest->left_child = huffman_tree_create();
+        huffman_tree_copy(dest->left_child, tree->left_child);
+    }
+    if (tree->right_child != NULL) {
+        dest->right_child = huffman_tree_create();
+        huffman_tree_copy(dest->right_child, tree->right_child);
+    }
+}
+
 static int huffman_tree_compare(const void* a, const void* b)
 {
     const tree_weight_t left_w = (**(HuffmanTree**)a).weight;
@@ -126,20 +142,4 @@ inline bool huffman_tree_is_leaf(HuffmanTree* tree)
         return true;
     }
     return false;
-}
-
-void huffman_tree_copy(HuffmanTree* dest, HuffmanTree* tree)
-{
-    if (tree == NULL) {
-        return;
-    }
-    memcpy(dest, tree, sizeof(*dest));
-    if (tree->left_child != NULL) {
-        dest->left_child = huffman_tree_create();
-        huffman_tree_copy(dest->left_child, tree->left_child);
-    }
-    if (tree->right_child != NULL) {
-        dest->right_child = huffman_tree_create();
-        huffman_tree_copy(dest->right_child, tree->right_child);
-    }
 }

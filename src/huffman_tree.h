@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HUFFMAN_TREE_H
+#define HUFFMAN_TREE_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -21,4 +22,5 @@ extern void huffman_tree_free_rec(HuffmanTree* tree);
 extern void huffman_tree_build(tree_weight_t* weights, HuffmanTree* dest);
 extern bool huffman_tree_is_leaf(HuffmanTree* tree);
 extern void huffman_tree_print(FILE* stream, HuffmanTree* tree);
-extern void huffman_tree_copy(HuffmanTree* dest, HuffmanTree* tree);
+
+#endif // HUFFMAN_TREE_H

@@ -2,9 +2,30 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+static size_t read_file_to_buffer(FILE* stream, HfmWord** buffer)
+{
+    if (fseek(stream, 0, SEEK_END) != 0) {
+        return 0;
+    }
+    size_t file_length = (size_t)ftell(stream);
+    if (fseek(stream, 0, SEEK_SET) != 0) {
+        return 0;
+    }
+
+    *buffer = malloc(file_length);
+    if (*buffer == NULL) {
+        return 0;
+    }
+
+    if (fread(*buffer, file_length, 1, stream) != 1) {
+        return 0;
+    }
+    return file_length;
+}
+
 int main(int argc, char** argv)
 {
-    int c;
+    int c = 0;
     char* output_path = NULL;
     char* file_path = NULL;
     enum HUFFMAN_MODE mode = MODE_COMPRESS;

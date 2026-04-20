@@ -7,20 +7,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-static size_t read_file_to_buffer(FILE* stream, HfmWord** buffer)
-{
-    size_t file_length;
-    fseek(stream, 0, SEEK_END);
-    file_length = (size_t)ftell(stream);
-    rewind(stream);
-    *buffer = malloc(file_length);
-    if (*buffer == NULL) {
-        return 0;
-    }
-    fread(*buffer, file_length, 1, stream);
-    return file_length;
-}
-
 static void get_codes_from_tree(HuffmanTree* tree, HfmCode* codes, HfmCode cur_code)
 {
     if (tree == NULL) {

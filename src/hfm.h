@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HFM_H
+#define HFM_H
 
 #include <stdint.h>
 #include <stdio.h>
@@ -23,3 +24,5 @@ typedef unsigned char HfmWord;
 
 extern int hfm_compress(FILE* source, FILE* output);
 extern int hfm_decompress(FILE* source, FILE* output);
+
+#endif // HFM_H
