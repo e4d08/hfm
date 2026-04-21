@@ -97,7 +97,6 @@ int hfm_compress(FILE* source, FILE* output)
     }
     huffman_tree_free_rec(huffman_tree);
 
-    fclose(output);
     free(input_buffer);
     return 0;
 }
@@ -137,7 +136,6 @@ int hfm_decompress(FILE* source, FILE* output)
     }
     huffman_tree_free_rec(huffman_tree);
 
-    fclose(output);
     free(input_buffer);
     return 0;
 }

@@ -51,6 +51,7 @@ int main(int argc, char** argv)
 
     FILE* output = fopen(output_path, "w+");
     if (output == NULL) {
+        fclose(source);
         fprintf(stderr, "Cannot open file %s to write.", output_path);
         return 1;
     }
