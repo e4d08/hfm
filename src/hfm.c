@@ -105,6 +105,10 @@ int hfm_decompress(FILE* source, FILE* output)
 {
     HfmWord* input_buffer = NULL;
     size_t file_length = read_file_to_buffer(source, &input_buffer);
+    if (file_length == 0) {
+        free(input_buffer);
+        return 0;
+    }
     tree_weight_t weights[ALPHABET_SIZE];
     uint64_t original_length;
     memcpy(weights, input_buffer + sizeof(original_length), ALPHABET_SIZE * sizeof(tree_weight_t));

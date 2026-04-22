@@ -115,7 +115,16 @@ void huffman_tree_build(tree_weight_t* weights, HuffmanTree* dest)
         }
     }
 
-    huffman_tree_copy(dest, tree_array2[n - 2]);
+    if (n == 1) {
+        dest->value = 0;
+        dest->weight = tree_array1[0]->weight;
+        dest->left_child = huffman_tree_create();
+        dest->right_child = huffman_tree_create();
+        huffman_tree_copy(dest->left_child, tree_array1[0]);
+        huffman_tree_copy(dest->right_child, tree_array1[1]);
+    } else {
+        huffman_tree_copy(dest, tree_array2[n - 2]);
+    }
 
     for (int k = 0; k < K; ++k) {
         free(tree_array1[k]);
