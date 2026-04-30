@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
     int c = 0;
     char *output_path = NULL;

@@ -7,8 +7,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-static size_t
-read_file_to_buffer(FILE *stream, HfmWord **buffer)
+static size_t read_file_to_buffer(FILE *stream, HfmWord **buffer)
 {
     if (fseek(stream, 0, SEEK_END) != 0) {
         return 0;
@@ -48,8 +47,7 @@ get_codes_from_tree(HuffmanTree *tree, HfmCode *codes, HfmCode cur_code)
     get_codes_from_tree(tree->right_child, codes, right_code);
 }
 
-int
-hfm_compress(FILE *source, FILE *output)
+int hfm_compress(FILE *source, FILE *output)
 {
     HfmWord *input_buffer = NULL;
     uint64_t file_length = read_file_to_buffer(source, &input_buffer);
@@ -106,8 +104,7 @@ hfm_compress(FILE *source, FILE *output)
     return 0;
 }
 
-int
-hfm_decompress(FILE *source, FILE *output)
+int hfm_decompress(FILE *source, FILE *output)
 {
     HfmWord *input_buffer = NULL;
     size_t file_length = read_file_to_buffer(source, &input_buffer);
