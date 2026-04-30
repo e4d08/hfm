@@ -6,7 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-static void huffman_tree_copy(HuffmanTree* dest, HuffmanTree* tree)
+static void
+huffman_tree_copy(HuffmanTree *dest, HuffmanTree *tree)
 {
     if (tree == NULL) {
         return;
@@ -22,10 +23,11 @@ static void huffman_tree_copy(HuffmanTree* dest, HuffmanTree* tree)
     }
 }
 
-static int huffman_tree_compare(const void* a, const void* b)
+static int
+huffman_tree_compare(const void *a, const void *b)
 {
-    const tree_weight_t left_w = (**(HuffmanTree**)a).weight;
-    const tree_weight_t right_w = (**(HuffmanTree**)b).weight;
+    const tree_weight_t left_w = (**(HuffmanTree **)a).weight;
+    const tree_weight_t right_w = (**(HuffmanTree **)b).weight;
     if (left_w == TREE_WEIGHT_MAX) {
         return -1;
     }
@@ -35,7 +37,8 @@ static int huffman_tree_compare(const void* a, const void* b)
     return left_w < right_w ? -1 : 1;
 }
 
-static tree_weight_t weight_sum(const tree_weight_t a, const tree_weight_t b)
+static tree_weight_t
+weight_sum(const tree_weight_t a, const tree_weight_t b)
 {
     if (a == TREE_WEIGHT_MAX || b == TREE_WEIGHT_MAX) {
         return TREE_WEIGHT_MAX;
@@ -44,9 +47,10 @@ static tree_weight_t weight_sum(const tree_weight_t a, const tree_weight_t b)
     }
 }
 
-HuffmanTree* huffman_tree_create()
+HuffmanTree *
+huffman_tree_create()
 {
-    HuffmanTree* tree_ptr = calloc(1, sizeof(HuffmanTree));
+    HuffmanTree *tree_ptr = calloc(1, sizeof(HuffmanTree));
     if (tree_ptr == NULL) {
         errno = ERROR_ALLOC;
         return NULL;
@@ -55,7 +59,8 @@ HuffmanTree* huffman_tree_create()
     return tree_ptr;
 }
 
-void huffman_tree_free_rec(HuffmanTree* tree)
+void
+huffman_tree_free_rec(HuffmanTree *tree)
 {
     if (tree != NULL) {
         huffman_tree_free_rec(tree->left_child);
@@ -64,7 +69,8 @@ void huffman_tree_free_rec(HuffmanTree* tree)
     }
 }
 
-void huffman_tree_build(tree_weight_t* weights, HuffmanTree* dest)
+void
+huffman_tree_build(tree_weight_t *weights, HuffmanTree *dest)
 {
     // ALPHABET_SIZE * 2 to prevent out-of-bounds
     // TODO
@@ -88,9 +94,12 @@ void huffman_tree_build(tree_weight_t* weights, HuffmanTree* dest)
 
     int i = 0, j = 0;
     for (int k = 0; k < n - 1; ++k) {
-        tree_weight_t sum11 = weight_sum(tree_array1[i]->weight, tree_array1[i + 1]->weight);
-        tree_weight_t sum22 = weight_sum(tree_array2[j]->weight, tree_array2[j + 1]->weight);
-        tree_weight_t sum12 = weight_sum(tree_array1[i]->weight, tree_array2[j]->weight);
+        tree_weight_t sum11 =
+            weight_sum(tree_array1[i]->weight, tree_array1[i + 1]->weight);
+        tree_weight_t sum22 =
+            weight_sum(tree_array2[j]->weight, tree_array2[j + 1]->weight);
+        tree_weight_t sum12 =
+            weight_sum(tree_array1[i]->weight, tree_array2[j]->weight);
         free(tree_array2[k]);
 
         if (sum11 <= sum22 && sum11 <= sum12) {
@@ -132,20 +141,25 @@ void huffman_tree_build(tree_weight_t* weights, HuffmanTree* dest)
     }
 }
 
-void huffman_tree_print(FILE* stream, HuffmanTree* tree)
+void
+huffman_tree_print(FILE *stream, HuffmanTree *tree)
 {
     if (tree == NULL) {
         fprintf(stream, "Null\n");
         return;
     }
-    fprintf(stream, "weight: %u\nvalue: %d\n-----------\nleft_child:\n", tree->weight, tree->value);
+    fprintf(stream,
+            "weight: %u\nvalue: %d\n-----------\nleft_child:\n",
+            tree->weight,
+            tree->value);
     huffman_tree_print(stream, tree->left_child);
     printf("-----------\nright_child:\n");
     huffman_tree_print(stream, tree->right_child);
     fprintf(stream, "---------------------\n");
 }
 
-inline bool huffman_tree_is_leaf(HuffmanTree* tree)
+inline bool
+huffman_tree_is_leaf(HuffmanTree *tree)
 {
     if (tree->left_child == NULL && tree->right_child == NULL) {
         return true;

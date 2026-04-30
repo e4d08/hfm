@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int main(int argc, char** argv)
+int
+main(int argc, char **argv)
 {
     int c = 0;
-    char* output_path = NULL;
-    char* file_path = NULL;
+    char *output_path = NULL;
+    char *file_path = NULL;
     enum HUFFMAN_MODE mode = MODE_COMPRESS;
 
     while ((c = getopt(argc, argv, "hdo:")) != -1) {
@@ -43,13 +44,13 @@ int main(int argc, char** argv)
         return ERROR_INVALID_OPTIONS;
     }
 
-    FILE* source = fopen(file_path, "r");
+    FILE *source = fopen(file_path, "r");
     if (source == NULL) {
         fprintf(stderr, "Cannot open file %s.", file_path);
         return 1;
     }
 
-    FILE* output = fopen(output_path, "w+");
+    FILE *output = fopen(output_path, "w+");
     if (output == NULL) {
         fclose(source);
         fprintf(stderr, "Cannot open file %s to write.", output_path);

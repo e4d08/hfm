@@ -7,7 +7,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-static size_t read_file_to_buffer(FILE* stream, HfmWord** buffer)
+static size_t
+read_file_to_buffer(FILE *stream, HfmWord **buffer)
 {
     if (fseek(stream, 0, SEEK_END) != 0) {
         return 0;
@@ -28,7 +29,8 @@ static size_t read_file_to_buffer(FILE* stream, HfmWord** buffer)
     return file_length;
 }
 
-static void get_codes_from_tree(HuffmanTree* tree, HfmCode* codes, HfmCode cur_code)
+static void
+get_codes_from_tree(HuffmanTree *tree, HfmCode *codes, HfmCode cur_code)
 {
     if (tree == NULL) {
         return;
@@ -38,15 +40,18 @@ static void get_codes_from_tree(HuffmanTree* tree, HfmCode* codes, HfmCode cur_c
         codes[tree->value] = cur_code;
     }
 
-    HfmCode left_code = { .code = cur_code.code << 1, .length = cur_code.length + 1 };
-    HfmCode right_code = { .code = (cur_code.code << 1) | 1, .length = cur_code.length + 1 };
+    HfmCode left_code = {.code = cur_code.code << 1,
+                         .length = cur_code.length + 1};
+    HfmCode right_code = {.code = (cur_code.code << 1) | 1,
+                          .length = cur_code.length + 1};
     get_codes_from_tree(tree->left_child, codes, left_code);
     get_codes_from_tree(tree->right_child, codes, right_code);
 }
 
-int hfm_compress(FILE* source, FILE* output)
+int
+hfm_compress(FILE *source, FILE *output)
 {
-    HfmWord* input_buffer = NULL;
+    HfmWord *input_buffer = NULL;
     uint64_t file_length = read_file_to_buffer(source, &input_buffer);
     if (file_length == 0) {
         fprintf(stderr, "Error while reading bytes from file.\n");
@@ -67,14 +72,14 @@ int hfm_compress(FILE* source, FILE* output)
 
     fwrite(cnt, sizeof(tree_weight_t), ALPHABET_SIZE, output);
 
-    HuffmanTree* huffman_tree = huffman_tree_create();
+    HuffmanTree *huffman_tree = huffman_tree_create();
     huffman_tree_build(cnt, huffman_tree);
     HfmCode codes[ALPHABET_SIZE];
     for (int i = 0; i < ALPHABET_SIZE; ++i) {
         codes[i].code = 0;
         codes[i].length = 0;
     }
-    const HfmCode zero_code = { .code = 0, .length = 0 };
+    const HfmCode zero_code = {.code = 0, .length = 0};
     get_codes_from_tree(huffman_tree, codes, zero_code);
 
     uint8_t buf = 0;
@@ -101,9 +106,10 @@ int hfm_compress(FILE* source, FILE* output)
     return 0;
 }
 
-int hfm_decompress(FILE* source, FILE* output)
+int
+hfm_decompress(FILE *source, FILE *output)
 {
-    HfmWord* input_buffer = NULL;
+    HfmWord *input_buffer = NULL;
     size_t file_length = read_file_to_buffer(source, &input_buffer);
     if (file_length == 0) {
         free(input_buffer);
@@ -111,13 +117,16 @@ int hfm_decompress(FILE* source, FILE* output)
     }
     tree_weight_t weights[ALPHABET_SIZE];
     uint64_t original_length;
-    memcpy(weights, input_buffer + sizeof(original_length), ALPHABET_SIZE * sizeof(tree_weight_t));
+    memcpy(weights,
+           input_buffer + sizeof(original_length),
+           ALPHABET_SIZE * sizeof(tree_weight_t));
     memcpy(&original_length, input_buffer, sizeof(original_length));
-    HuffmanTree* huffman_tree = huffman_tree_create();
+    HuffmanTree *huffman_tree = huffman_tree_create();
     huffman_tree_build(weights, huffman_tree);
-    HuffmanTree* cur = huffman_tree;
+    HuffmanTree *cur = huffman_tree;
     size_t written_count = 0;
-    for (size_t i = sizeof(weights) + sizeof(original_length); i < file_length; ++i) {
+    for (size_t i = sizeof(weights) + sizeof(original_length); i < file_length;
+         ++i) {
         tree_value_t cur_byte = input_buffer[i];
         for (int j = BYTE_LENGTH - 1; j >= 0; --j) {
             if (((cur_byte >> j) & 1) == 1) {
