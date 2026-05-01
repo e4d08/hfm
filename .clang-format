@@ -22,6 +22,5 @@ BinPackArguments: false
 BinPackParameters: false
 AllowAllArgumentsOnNextLine: false
 AllowShortFunctionsOnASingleLine: Empty
-BreakAfterReturnType: ExceptShortType
 AlignEscapedNewlines: Left
 ForEachMacros: ['ssh_callbacks_iterate']
