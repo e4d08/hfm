@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.14)
 project(hfm VERSION 1.0 LANGUAGES C)
 
 set(CMAKE_C_STANDARD 99)
