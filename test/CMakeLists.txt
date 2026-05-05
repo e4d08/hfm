@@ -1,5 +1,2 @@
-add_mocked_test(compress_decompress
-    SOURCES ${CMAKE_SOURCE_DIR}/src/hfm.c ${CMAKE_SOURCE_DIR}/src/huffman_tree.c 
-#   MOCKS getc putc fprintf exit
-#   COMPILE_OPTIONS -fno-builtin
-)
+add_executable(test_compress_decompress test_compress_decompress.c)
+target_link_libraries(test_compress_decompress PRIVATE hfm_lib cmocka)
