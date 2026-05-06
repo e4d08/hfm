@@ -7,4 +7,4 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_subdirectory(src)
 
 enable_testing()
-add_subdirectory(test/unit)
+add_subdirectory(test)
