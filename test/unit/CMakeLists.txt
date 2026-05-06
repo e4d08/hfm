@@ -1,7 +1,7 @@
 add_library(unity STATIC 
     ${CMAKE_CURRENT_SOURCE_DIR}/../third_party/unity/unity.c
 )
-target_include_directories(unity PRIVATE 
+target_include_directories(unity PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}/../third_party/unity
 )
 
