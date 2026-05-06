@@ -1,4 +1,4 @@
-#include "hfm.h"
+#include "hfm/hfm.h"
 #include <stdlib.h>
 #include <unistd.h>
 

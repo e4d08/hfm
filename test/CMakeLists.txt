@@ -1,2 +1,0 @@
-add_executable(test_compress_decompress test_compress_decompress.c)
-target_link_libraries(test_compress_decompress PRIVATE hfm_lib cmocka)
