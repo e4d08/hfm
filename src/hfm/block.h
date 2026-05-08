@@ -12,6 +12,15 @@ enum BLOCK_FLAGS { BLOCK_UNCOMPRESSED = 1 };
 
 typedef uint16_t CodeTable[ALPHABET_SIZE];
 
+/**
+ * Structure for blocks. It implements the basic brick for compressed data.
+ * All raw data is read by `BLOCK_SIZE` bytes chunks and is compressed into 
+ * blocks of no more than 64 KiBs each.
+ * `buf` is the buffer for writing result.
+ * `pos` is the current position of block (count of written bytes).
+ * `cur_byte` is a buffer to represent current byte in memory.
+ * `cur_len` is length of `cur_byte` (amount of written bits, up to 7).
+ */
 typedef struct Block_s {
     uint8_t *buf;
     uint16_t pos;
