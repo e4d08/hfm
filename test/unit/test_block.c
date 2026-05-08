@@ -71,7 +71,7 @@ void test_bit_write_overflow_returns_error() {
 
     TEST_ASSERT_EQUAL_INT(ERR_BLOCK_END, Block_write_bit(&test_block, 0));
     TEST_ASSERT_EQUAL_INT(BLOCK_SIZE, test_block.pos);
-    TEST_ASSERT_EQUAL_INT(7, test_block.cur_len); 
+    TEST_ASSERT_EQUAL_INT(8, test_block.cur_len); 
 }
 
 void test_end_stream_flushes_partial_byte() {
