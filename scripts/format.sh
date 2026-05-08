@@ -1,1 +1,1 @@
-clang-format --style=file -i src/*.c src/*.h
+clang-format --style=file -i `git ls-files 'src/*.c' 'src/*.h'`
