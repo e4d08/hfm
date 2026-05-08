@@ -5,3 +5,6 @@ add_executable(test_hfm
     unit/test_hfm.c
 )
 target_link_libraries(test_hfm PRIVATE hfm_lib unity)
+
+include(CTest)
+add_test(NAME unit_tests COMMAND test_hfm)
