@@ -21,6 +21,7 @@ typedef struct BlockHeader_s {
 
 extern void Block_start_stream(Block *block, uint8_t *buf);
 extern int Block_write_bit(Block *block, uint8_t bit);
+extern int Block_write_byte(Block *block, uint8_t byte);
 extern int Block_end_stream(Block *block);
 
 #endif // BLOCK_H
