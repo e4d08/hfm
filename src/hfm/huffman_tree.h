@@ -6,9 +6,9 @@
 #include <stdio.h>
 
 typedef uint8_t tree_value_t;
-typedef uint32_t tree_weight_t;
+typedef uint16_t tree_weight_t;
 
-#define TREE_WEIGHT_MAX UINT32_MAX
+#define TREE_WEIGHT_MAX UINT16_MAX
 
 typedef struct HuffmanTree_s {
     tree_weight_t weight;

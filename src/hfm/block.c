@@ -8,6 +8,7 @@ static int Block_flush_byte(Block *block)
     }
 
     block->buf[block->pos] = block->cur_byte;
+    block->cur_byte = 0x0;
     block->pos += 1;
     block->cur_len = 0;
 
@@ -48,4 +49,22 @@ int Block_end_stream(Block *block)
     }
 
     return 0;
+}
+
+void BlockHeader_read(uint8_t *src, BlockHeader *header) {
+    header->flags = src[0];
+    header->block_size = (src[1] << 8) | src[2];
+    header->data_size = (src[3] << 8) | src[4];
+    if (header->block_size == 0) header->block_size = BLOCK_SIZE;
+    if (header->data_size == 0) header->data_size = BLOCK_SIZE;
+    memcpy(header->code_table, src + 5, sizeof(CodeTable));
+}
+
+void BlockHeader_write(BlockHeader *header, uint8_t *dest) {
+    dest[0] = header->flags;
+    dest[1] = (uint8_t)(header->block_size >> 8);
+    dest[2] = (uint8_t)(header->block_size);
+    dest[3] = (uint8_t)(header->data_size >> 8);
+    dest[4] = (uint8_t)(header->data_size);
+    memcpy(dest + 5, header->code_table, sizeof(CodeTable));
 }

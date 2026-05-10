@@ -1,6 +1,63 @@
-#include "hfm/hfm.h"
+#include "hfm.h"
+#include "block.h"
+#include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
+
+static int compress_file(int fin, int fout)
+{
+    uint8_t in_buf[BLOCK_SIZE];
+    uint8_t out_buf[BLOCK_SIZE];
+    uint8_t header_buf[BLOCK_HEADER_FULL];
+    BlockHeader header;
+    CodeTable code_table;
+    header.code_table = &code_table;
+
+    ssize_t n = read(fin, in_buf, BLOCK_SIZE);
+    while (n > 0) {
+        uint32_t block_size = hfm_compress_block(&header, in_buf, out_buf, (uint32_t)n);
+        BlockHeader_write(&header, header_buf);
+        write(fout, header_buf, BLOCK_HEADER_FULL);
+        write(fout, out_buf, block_size);
+
+        n = read(fin, in_buf, BLOCK_SIZE);
+    }
+
+    if (n == -1) {
+        fprintf(stderr, "Cannot read from input file\n");
+        return -1;
+    }
+
+    return 0;
+}
+
+static int decompress_file(int fin, int fout) {
+    uint8_t in_buf[BLOCK_SIZE];
+    uint8_t out_buf[BLOCK_SIZE];
+    uint8_t header_buf[BLOCK_HEADER_FULL];
+    BlockHeader header;
+    CodeTable code_table;
+    header.code_table = &code_table;
+
+    while (1) {
+        ssize_t header_size = read(fin, header_buf, BLOCK_HEADER_FULL);
+        if (header_size == 0) {
+            return 0;
+        }
+        if (header_size < 0) {
+            fprintf(stderr, "Cannot read block header from input file\n");
+            return 1;
+        }
+
+        BlockHeader_read(header_buf, &header);
+        read(fin, in_buf, header.block_size);
+        uint32_t result_size = hfm_decompress_block(&header, in_buf, out_buf);
+        write(fout, out_buf, result_size);
+    }
+
+    return 0;
+}
 
 int main(int argc, char **argv)
 {
@@ -43,15 +100,16 @@ int main(int argc, char **argv)
         return ERROR_INVALID_OPTIONS;
     }
 
-    FILE *source = fopen(file_path, "r");
-    if (source == NULL) {
+    int fin = open(file_path, O_RDONLY);
+    if (fin == -1) {
+        close(fin);
         fprintf(stderr, "Cannot open file %s.", file_path);
         return 1;
     }
 
-    FILE *output = fopen(output_path, "w+");
-    if (output == NULL) {
-        fclose(source);
+    int fout = open(output_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (fout == -1) {
+        close(fin);
         fprintf(stderr, "Cannot open file %s to write.", output_path);
         return 1;
     }
@@ -59,13 +117,13 @@ int main(int argc, char **argv)
     int rc = 0;
 
     if (mode == MODE_COMPRESS) {
-        rc = hfm_compress(source, output);
+        rc = compress_file(fin, fout);
     } else if (mode == MODE_DECOMPRESS) {
-        rc = hfm_decompress(source, output);
+        rc = decompress_file(fin, fout);
     }
 
-    fclose(source);
-    fclose(output);
+    close(fin);
+    close(fout);
 
     return rc;
 }
