@@ -7,7 +7,6 @@
 #define ALPHABET_SIZE (256)
 #define ERR_BLOCK_END (1)
 #define BLOCK_HEADER_SIZE (5)
-#define BLOCK_HEADER_FULL (BLOCK_HEADER_SIZE + sizeof(CodeTable))
 
 typedef uint16_t CodeTable[ALPHABET_SIZE];
 
@@ -22,7 +21,6 @@ typedef struct BlockHeader_s {
     uint8_t flags;
     uint32_t block_size;
     uint32_t data_size;
-    CodeTable *code_table;
 } BlockHeader;
 
 extern void Block_start_stream(Block *block, uint8_t *buf);

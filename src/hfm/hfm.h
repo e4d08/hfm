@@ -19,10 +19,7 @@ typedef struct HfmCode_s {
 
 typedef unsigned char HfmWord;
 
-extern int hfm_compress(FILE *source, FILE *output);
-extern int hfm_decompress(FILE *source, FILE *output);
-
-extern uint32_t hfm_compress_block(BlockHeader *header, uint8_t *source, uint8_t *dest, uint32_t n);
-extern uint32_t hfm_decompress_block(BlockHeader *header, uint8_t *source, uint8_t *dest);
+extern uint32_t hfm_compress_block(CodeTable table, BlockHeader *header, uint8_t *source, uint8_t *dest, uint32_t n);
+extern uint32_t hfm_decompress_block(CodeTable table, BlockHeader *header, uint8_t *source, uint8_t *dest);
 
 #endif // HFM_H
