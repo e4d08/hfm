@@ -60,6 +60,10 @@ uint32_t hfm_compress_block(CodeTable table, BlockHeader *header, uint8_t *sourc
     header->flags = 0x0;
     header->block_size = block.pos;
     header->data_size = n;
+
+    if (block.pos >= n) {
+        header->flags |= BLOCK_UNCOMPRESSED;
+    }
     
     return block.pos;
 }
