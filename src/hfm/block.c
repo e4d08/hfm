@@ -55,8 +55,6 @@ void BlockHeader_read(uint8_t *src, BlockHeader *header) {
     header->flags = src[0];
     header->block_size = (src[1] << 8) | src[2];
     header->data_size = (src[3] << 8) | src[4];
-    if (header->block_size == 0) header->block_size = BLOCK_SIZE;
-    if (header->data_size == 0) header->data_size = BLOCK_SIZE;
 }
 
 void BlockHeader_write(BlockHeader *header, uint8_t *dest) {

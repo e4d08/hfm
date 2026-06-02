@@ -15,12 +15,12 @@ static int compress_file(int fin, int fout)
 
     ssize_t n = read(fin, in_buf, BLOCK_SIZE);
     while (n > 0) {
-        uint32_t block_size = hfm_compress_block(table, &header, in_buf, out_buf, (uint32_t)n);
+        uint16_t block_size = hfm_compress_block(table, &header, in_buf, out_buf, (uint16_t)n);
         BlockHeader_write(&header, header_buf);
         write(fout, header_buf, BLOCK_HEADER_SIZE);
         
         if (header.flags & BLOCK_UNCOMPRESSED) {
-            write(fout, in_buf, (uint32_t)n);
+            write(fout, in_buf, (uint16_t)n);
         } else {
             write(fout, table, sizeof(CodeTable));
             write(fout, out_buf, block_size);
@@ -63,7 +63,7 @@ static int decompress_file(int fin, int fout) {
 
         read(fin, table, sizeof(CodeTable));
         read(fin, in_buf, header.block_size);
-        uint32_t result_size = hfm_decompress_block(table, &header, in_buf, out_buf);
+        uint16_t result_size = hfm_decompress_block(table, &header, in_buf, out_buf);
         write(fout, out_buf, result_size);
     }
 

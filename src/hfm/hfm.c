@@ -25,13 +25,13 @@ get_codes_from_tree(HuffmanTree *tree, HfmCode *codes, HfmCode cur_code)
     get_codes_from_tree(tree->right_child, codes, right_code);
 }
 
-uint32_t hfm_compress_block(CodeTable table, BlockHeader *header, uint8_t *source, uint8_t *dest, uint32_t n)
+uint16_t hfm_compress_block(CodeTable table, BlockHeader *header, uint8_t *source, uint8_t *dest, uint16_t n)
 {
     for (int i = 0; i < ALPHABET_SIZE; ++i) {
         table[i] = 0;
     }
 
-    for (uint32_t i = 0; i < n; ++i) {
+    for (uint16_t i = 0; i < n; ++i) {
         table[source[i]] += 1;
     }
 
@@ -48,7 +48,7 @@ uint32_t hfm_compress_block(CodeTable table, BlockHeader *header, uint8_t *sourc
     Block block;
 
     Block_start_stream(&block, dest);
-    for (uint32_t i = 0; i < n; ++i) {
+    for (uint16_t i = 0; i < n; ++i) {
         HfmCode code = codes[source[i]];
         for (int j = code.length - 1; j >= 0; --j) {
             const uint8_t bit = (code.code >> j) & 1;
@@ -68,14 +68,14 @@ uint32_t hfm_compress_block(CodeTable table, BlockHeader *header, uint8_t *sourc
     return block.pos;
 }
 
-uint32_t hfm_decompress_block(CodeTable table, BlockHeader *header, uint8_t *source, uint8_t *dest)
+uint16_t hfm_decompress_block(CodeTable table, BlockHeader *header, uint8_t *source, uint8_t *dest)
 {
     HuffmanTree *huffman_tree = huffman_tree_create();
     huffman_tree_build(table, huffman_tree);
 
-    uint32_t pos = 0;
+    uint16_t pos = 0;
     HuffmanTree *cur = huffman_tree;
-    for (uint32_t i = 0; i < header->block_size; ++i) {
+    for (uint16_t i = 0; i < header->block_size; ++i) {
         tree_value_t byte = source[i];
         for (int j = 0; j < 8; ++j) {
             uint8_t bit = (byte >> j) & 1;
