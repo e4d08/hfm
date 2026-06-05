@@ -24,24 +24,9 @@ static void huffman_tree_copy(HuffmanTree *dest, HuffmanTree *tree)
 
 static int huffman_tree_compare(const void *a, const void *b)
 {
-    const tree_weight_t left_w = (**(HuffmanTree **)a).weight;
-    const tree_weight_t right_w = (**(HuffmanTree **)b).weight;
-    if (left_w == TREE_WEIGHT_MAX) {
-        return -1;
-    }
-    if (right_w == TREE_WEIGHT_MAX) {
-        return 1;
-    }
+    const uint32_t left_w = (**(HuffmanTree **)a).weight;
+    const uint32_t right_w = (**(HuffmanTree **)b).weight;
     return left_w < right_w ? -1 : 1;
-}
-
-static tree_weight_t weight_sum(const tree_weight_t a, const tree_weight_t b)
-{
-    if (a == TREE_WEIGHT_MAX || b == TREE_WEIGHT_MAX) {
-        return TREE_WEIGHT_MAX;
-    } else {
-        return a + b;
-    }
 }
 
 HuffmanTree *huffman_tree_create()
@@ -88,34 +73,31 @@ void huffman_tree_build(tree_weight_t *weights, HuffmanTree *dest)
 
     int i = 0, j = 0;
     for (int k = 0; k < n - 1; ++k) {
-        tree_weight_t sum11 =
-            weight_sum(tree_array1[i]->weight, tree_array1[i + 1]->weight);
-        tree_weight_t sum22 =
-            weight_sum(tree_array2[j]->weight, tree_array2[j + 1]->weight);
-        tree_weight_t sum12 =
-            weight_sum(tree_array1[i]->weight, tree_array2[j]->weight);
+        uint32_t sum11 = (uint32_t)tree_array1[i]->weight + tree_array1[i + 1]->weight;
+        uint32_t sum12 = (uint32_t)tree_array1[i]->weight + tree_array2[j]->weight;
+        uint32_t sum22 = (uint32_t)tree_array2[j]->weight + tree_array2[j + 1]->weight;
         free(tree_array2[k]);
 
         if (sum11 <= sum22 && sum11 <= sum12) {
             tree_array2[k] = huffman_tree_create();
             tree_array2[k]->left_child = tree_array1[i];
             tree_array2[k]->right_child = tree_array1[i + 1];
-            tree_array2[k]->weight = sum11;
+            tree_array2[k]->weight = (tree_weight_t)sum11;
             i += 2;
-        } else if (sum22 <= sum11 && sum22 <= sum12) {
-            tree_array2[k] = huffman_tree_create();
-            tree_array2[k]->left_child = tree_array2[j];
-            tree_array2[k]->right_child = tree_array2[j + 1];
-            tree_array2[k]->weight = sum22;
-            j += 2;
         } else if (sum12 <= sum22 && sum12 <= sum11) {
             tree_array2[k] = huffman_tree_create();
             tree_array2[k]->left_child = tree_array1[i];
             tree_array2[k]->right_child = tree_array2[j];
-            tree_array2[k]->weight = sum12;
+            tree_array2[k]->weight = (tree_weight_t)sum12;
             i += 1;
             j += 1;
-        }
+        } else if (sum22 <= sum11 && sum22 <= sum12) {
+            tree_array2[k] = huffman_tree_create();
+            tree_array2[k]->left_child = tree_array2[j];
+            tree_array2[k]->right_child = tree_array2[j + 1];
+            tree_array2[k]->weight = (tree_weight_t)sum22;
+            j += 2;
+        } 
     }
 
     if (n == 1) {
