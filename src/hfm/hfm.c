@@ -65,6 +65,7 @@ uint16_t hfm_compress_block(CodeTable table, BlockHeader *header, uint8_t *sourc
         header->flags |= BLOCK_UNCOMPRESSED;
     }
     
+    huffman_tree_free_rec(huffman_tree);
     return block.pos;
 }
 
