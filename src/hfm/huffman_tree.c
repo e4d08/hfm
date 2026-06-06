@@ -24,8 +24,11 @@ static void huffman_tree_copy(HuffmanTree *dest, HuffmanTree *tree)
 
 static int huffman_tree_compare(const void *a, const void *b)
 {
-    const uint32_t left_w = (**(HuffmanTree **)a).weight;
-    const uint32_t right_w = (**(HuffmanTree **)b).weight;
+    const tree_weight_t left_w = (**(HuffmanTree **)a).weight;
+    const tree_weight_t right_w = (**(HuffmanTree **)b).weight;
+    if (left_w == right_w) {
+        return 0;
+    }
     return left_w < right_w ? -1 : 1;
 }
 

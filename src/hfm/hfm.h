@@ -13,7 +13,7 @@
 enum HUFFMAN_MODE { MODE_COMPRESS, MODE_DECOMPRESS };
 
 typedef struct HfmCode_s {
-    uint16_t code;
+    uint32_t code;
     uint8_t length;
 } HfmCode;
 
