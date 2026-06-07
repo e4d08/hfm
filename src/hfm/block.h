@@ -8,9 +8,7 @@
 #define ERR_BLOCK_END (1)
 #define BLOCK_HEADER_SIZE (5)
 
-enum BLOCK_FLAGS {
-    BLOCK_UNCOMPRESSED = 1 
-};
+enum BLOCK_FLAGS { BLOCK_UNCOMPRESSED = 1 };
 
 typedef uint16_t CodeTable[ALPHABET_SIZE];
 

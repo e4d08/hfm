@@ -1,8 +1,7 @@
 #include "block.h"
 #include <string.h>
 
-static int Block_flush_byte(Block *block)
-{
+static int Block_flush_byte(Block *block) {
     if (block->pos >= BLOCK_SIZE) {
         return ERR_BLOCK_END;
     }
@@ -15,8 +14,7 @@ static int Block_flush_byte(Block *block)
     return 0;
 }
 
-void Block_start_stream(Block *block, uint8_t *buf)
-{
+void Block_start_stream(Block *block, uint8_t *buf) {
     block->buf = buf;
     memset(buf, 0, BLOCK_SIZE);
     block->pos = 0;
@@ -24,14 +22,12 @@ void Block_start_stream(Block *block, uint8_t *buf)
     block->cur_len = 0;
 }
 
-int Block_write_byte(Block *block, uint8_t byte)
-{
+int Block_write_byte(Block *block, uint8_t byte) {
     block->cur_byte = byte;
     return Block_flush_byte(block);
 }
 
-int Block_write_bit(Block *block, uint8_t bit)
-{
+int Block_write_bit(Block *block, uint8_t bit) {
     block->cur_byte |= (bit << block->cur_len);
     block->cur_len += 1;
 
@@ -42,8 +38,7 @@ int Block_write_bit(Block *block, uint8_t bit)
     return 0;
 }
 
-int Block_end_stream(Block *block)
-{
+int Block_end_stream(Block *block) {
     if (block->cur_len != 0) {
         return Block_flush_byte(block);
     }

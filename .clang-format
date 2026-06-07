@@ -7,7 +7,7 @@ AllowShortIfStatementsOnASingleLine: false
 BreakBeforeBraces: Custom
 BraceWrapping:
     AfterEnum: false
-    AfterFunction: true
+    AfterFunction: false
     AfterStruct: false
     AfterUnion: false
     AfterExternBlock: false

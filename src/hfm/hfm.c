@@ -7,8 +7,7 @@
 #include <unistd.h>
 
 static void
-get_codes_from_tree(HuffmanTree *tree, HfmCode *codes, HfmCode cur_code)
-{
+get_codes_from_tree(HuffmanTree *tree, HfmCode *codes, HfmCode cur_code) {
     if (tree == NULL) {
         return;
     }
@@ -25,8 +24,11 @@ get_codes_from_tree(HuffmanTree *tree, HfmCode *codes, HfmCode cur_code)
     get_codes_from_tree(tree->right_child, codes, right_code);
 }
 
-uint16_t hfm_compress_block(CodeTable table, BlockHeader *header, uint8_t *source, uint8_t *dest, uint16_t n)
-{
+uint16_t hfm_compress_block(CodeTable table,
+                            BlockHeader *header,
+                            uint8_t *source,
+                            uint8_t *dest,
+                            uint16_t n) {
     for (int i = 0; i < ALPHABET_SIZE; ++i) {
         table[i] = 0;
     }
@@ -64,13 +66,15 @@ uint16_t hfm_compress_block(CodeTable table, BlockHeader *header, uint8_t *sourc
     if (block.pos >= n) {
         header->flags |= BLOCK_UNCOMPRESSED;
     }
-    
+
     huffman_tree_free_rec(huffman_tree);
     return block.pos;
 }
 
-uint16_t hfm_decompress_block(CodeTable table, BlockHeader *header, uint8_t *source, uint8_t *dest)
-{
+uint16_t hfm_decompress_block(CodeTable table,
+                              BlockHeader *header,
+                              uint8_t *source,
+                              uint8_t *dest) {
     HuffmanTree *huffman_tree = huffman_tree_create();
     huffman_tree_build(table, huffman_tree);
 
