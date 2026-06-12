@@ -118,21 +118,6 @@ void huffman_tree_build(tree_weight_t *weights, HuffmanTree *dest) {
     }
 }
 
-void huffman_tree_print(FILE *stream, HuffmanTree *tree) {
-    if (tree == NULL) {
-        fprintf(stream, "Null\n");
-        return;
-    }
-    fprintf(stream,
-            "weight: %u\nvalue: %d\n-----------\nleft_child:\n",
-            tree->weight,
-            tree->value);
-    huffman_tree_print(stream, tree->left_child);
-    printf("-----------\nright_child:\n");
-    huffman_tree_print(stream, tree->right_child);
-    fprintf(stream, "---------------------\n");
-}
-
 inline bool huffman_tree_is_leaf(HuffmanTree *tree) {
     if (tree->left_child == NULL && tree->right_child == NULL) {
         return true;

@@ -46,6 +46,5 @@ extern void huffman_tree_build(tree_weight_t *weights, HuffmanTree *dest);
  * `true` is yes and `false` is no.
  */
 extern bool huffman_tree_is_leaf(HuffmanTree *tree);
-extern void huffman_tree_print(FILE *stream, HuffmanTree *tree);
 
 #endif // HUFFMAN_TREE_H
