@@ -1,0 +1,17 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build-and-test:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+      - name: Check code style
+        run: clang-format --dry-run -Werror `git ls-files 'src/*.c' 'src/*.h'`
+      - name: Build
+        run: ./scripts/build.sh
+      - name: Run tests
+        run: ./scripts/test.sh
