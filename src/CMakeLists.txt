@@ -1,5 +1,3 @@
-add_compile_options(-Wall -Wextra -pedantic -Wshadow -Wconversion -Werror)
-
 add_library(hfm_lib STATIC
     hfm/hfm.c
     hfm/huffman_tree.c
