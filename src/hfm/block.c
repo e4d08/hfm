@@ -22,11 +22,6 @@ void Block_start_stream(Block *block, uint8_t *buf) {
     block->cur_len = 0;
 }
 
-int Block_write_byte(Block *block, uint8_t byte) {
-    block->cur_byte = byte;
-    return Block_flush_byte(block);
-}
-
 int Block_write_bit(Block *block, uint8_t bit) {
     block->cur_byte |= (bit << block->cur_len);
     block->cur_len += 1;

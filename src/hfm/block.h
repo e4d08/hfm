@@ -40,9 +40,19 @@ typedef struct BlockHeader_s {
     uint16_t data_size;
 } BlockHeader;
 
+/**
+ * Initialize `block` with start values and set its buffer to `buf`.
+ */
 extern void Block_start_stream(Block *block, uint8_t *buf);
+
+/**
+ * Write least significant bit of `bit` to `block`.
+ */
 extern int Block_write_bit(Block *block, uint8_t bit);
-extern int Block_write_byte(Block *block, uint8_t byte);
+
+/**
+ * Flush last byte of `block` to output buffer if it is not empty.
+ */
 extern int Block_end_stream(Block *block);
 
 /**
