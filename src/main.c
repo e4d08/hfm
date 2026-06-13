@@ -1,8 +1,8 @@
 #include "block.h"
 #include "hfm.h"
 #include <fcntl.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 
 static int compress_file(int fin, int fout) {
@@ -86,8 +86,8 @@ int main(int argc, char **argv) {
             output_path = optarg;
             break;
         case 'h':
-            printf("Usage: hfm [-d] [-o OUT] FILE\n");
-            return 0;
+            fprintf(stderr, "Usage: hfm [-d] [-o OUT] FILE\n");
+            return 1;
         case '?':
             if (optopt == 'o') {
                 fprintf(stderr, "Option -o requires a parameter.\n");

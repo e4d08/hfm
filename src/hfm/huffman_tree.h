@@ -5,10 +5,10 @@
 #include <stdint.h>
 #include <stdio.h>
 
-typedef uint8_t tree_value_t; // type for tree values (characters)
+typedef uint8_t tree_value_t;   // type for tree values (characters)
 typedef uint16_t tree_weight_t; // type for tree weights (frequencies)
 
-#define TREE_WEIGHT_MAX UINT16_MAX // max weight of a tree (aka frequency of a character)
+#define TREE_WEIGHT_MAX UINT16_MAX // max frequency used as infinity
 
 /**
  * Structure for Huffman Tree (and tree node). If it is a leaf,
@@ -35,7 +35,7 @@ extern HuffmanTree *huffman_tree_create();
 extern void huffman_tree_free_rec(HuffmanTree *tree);
 
 /**
- * Build huffman tree at `dest` for provided `weights` (a table of 
+ * Build huffman tree at `dest` for provided `weights` (a table of
  * frequencies of all characters).
  * After building `dest` needs to be freed.
  */

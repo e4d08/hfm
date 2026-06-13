@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define BLOCK_SIZE (65535) // Size of blocks which are operated by hfm (64 KiB - 1)
+#define BLOCK_SIZE (65535)  // Size of blocks (64 KiB - 1)
 #define ALPHABET_SIZE (256) // 8-bit compression (1-byte)
 #define ERR_BLOCK_END (1)
 #define BLOCK_HEADER_SIZE (5)
@@ -14,7 +14,7 @@ typedef uint16_t CodeTable[ALPHABET_SIZE];
 
 /**
  * Structure for blocks. It implements the basic brick for compressed data.
- * All raw data is read by `BLOCK_SIZE` bytes chunks and is compressed into 
+ * All raw data is read by `BLOCK_SIZE` bytes chunks and is compressed into
  * blocks of no more than 64 KiBs each.
  * `buf` is the buffer for writing result.
  * `pos` is the current position of block (count of written bytes).
@@ -29,10 +29,10 @@ typedef struct Block_s {
 } Block;
 
 /**
- * Header of block. Its members are written to output file and read from input file.
- * `flags` currently can be 0 or 1, where the latter means an uncompressed block.
- * `block_size` is the size of the compressed block.
- * `data_size` is the size of the original block data.
+ * Header of block. Its members are written to output file and read from input
+ * file. `flags` currently can be 0 or 1, where the latter means an uncompressed
+ * block. `block_size` is the size of the compressed block. `data_size` is the
+ * size of the original block data.
  */
 typedef struct BlockHeader_s {
     uint8_t flags;
