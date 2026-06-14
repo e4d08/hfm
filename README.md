@@ -1,6 +1,7 @@
 # hfm
 
 [![CI](https://github.com/e4d08/hfm/actions/workflows/ci.yml/badge.svg)](https://github.com/e4d08/hfm/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/e4d08/hfm/branch/master/graph/badge.svg)](https://codecov.io/gh/e4d08/hfm)
 
 Консольная утилита, умеющая сжимать произвольный файл, а затем разжимать его обратно с помощью алгоритма Хаффмана.
 
