@@ -32,13 +32,13 @@ run_hyperfine() {
                 hyperfine_args+=("\"$HFM_BIN\" \"$test_file\" -o \"${RUN_DIR}/${filename}.hfm\"")
                 ;;
             gzip)
-                hyperfine_args+=("gzip -c \"$test_file\" > \"${RUN_DIR}/${filename}.gz\"")
+                hyperfine_args+=("gzip -4 -c \"$test_file\" > \"${RUN_DIR}/${filename}.gz\"")
                 ;;
             bzip2)
-                hyperfine_args+=("bzip2 -c \"$test_file\" > \"${RUN_DIR}/${filename}.bz2\"")
+                hyperfine_args+=("bzip2 -4 -c \"$test_file\" > \"${RUN_DIR}/${filename}.bz2\"")
                 ;;
             xz)
-                hyperfine_args+=("xz -c \"$test_file\" > \"${RUN_DIR}/${filename}.xz\"")
+                hyperfine_args+=("xz -4 -c \"$test_file\" > \"${RUN_DIR}/${filename}.xz\"")
                 ;;
             zstd)
                 hyperfine_args+=("zstd -f -c \"$test_file\" > \"${RUN_DIR}/${filename}.zst\"")
