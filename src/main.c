@@ -5,6 +5,16 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#define ERROR_FAILURE 1
+#define ERROR_INVALID_OPTIONS 2
+
+#define read_exact(fd, buf, n) \
+    if (read(fd, buf, n) != n) \
+        return ERROR_FAILURE;
+#define write_exact(fd, buf, n) \
+    if (write(fd, buf, n) != n) \
+        return ERROR_FAILURE;
+
 static int compress_file(int fin, int fout) {
     uint8_t in_buf[BLOCK_SIZE];
     uint8_t out_buf[BLOCK_SIZE];
@@ -17,13 +27,13 @@ static int compress_file(int fin, int fout) {
         uint16_t block_size =
             hfm_compress_block(table, &header, in_buf, out_buf, (uint16_t)n);
         BlockHeader_write(&header, header_buf);
-        write(fout, header_buf, BLOCK_HEADER_SIZE);
+        write_exact(fout, header_buf, BLOCK_HEADER_SIZE);
 
         if (header.flags & BLOCK_UNCOMPRESSED) {
-            write(fout, in_buf, (uint16_t)n);
+            write_exact(fout, in_buf, (uint16_t)n)
         } else {
-            write(fout, table, sizeof(CodeTable));
-            write(fout, out_buf, block_size);
+            write_exact(fout, table, sizeof(CodeTable));
+            write_exact(fout, out_buf, block_size);
         }
 
         n = read(fin, in_buf, BLOCK_SIZE);
@@ -31,7 +41,7 @@ static int compress_file(int fin, int fout) {
 
     if (n == -1) {
         fprintf(stderr, "Cannot read from input file\n");
-        return -1;
+        return EXIT_FAILURE;
     }
 
     return 0;
@@ -51,21 +61,21 @@ static int decompress_file(int fin, int fout) {
         }
         if (header_size < 0) {
             fprintf(stderr, "Cannot read block header from input file\n");
-            return 1;
+            return ERROR_FAILURE;
         }
         BlockHeader_read(header_buf, &header);
 
         if (header.flags & BLOCK_UNCOMPRESSED) {
-            read(fin, in_buf, header.data_size);
-            write(fout, in_buf, header.data_size);
+            read_exact(fin, in_buf, header.data_size);
+            write_exact(fout, in_buf, header.data_size);
             continue;
         }
 
-        read(fin, table, sizeof(CodeTable));
-        read(fin, in_buf, header.block_size);
+        read_exact(fin, table, sizeof(CodeTable));
+        read_exact(fin, in_buf, header.block_size);
         uint16_t result_size =
             hfm_decompress_block(table, &header, in_buf, out_buf);
-        write(fout, out_buf, result_size);
+        write_exact(fout, out_buf, result_size);
     }
 
     return 0;
@@ -115,14 +125,15 @@ int main(int argc, char **argv) {
     if (fin == -1) {
         close(fin);
         fprintf(stderr, "Cannot open file %s.", file_path);
-        return 1;
+        return ERROR_FAILURE;
     }
 
     int fout = open(output_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
     if (fout == -1) {
         close(fin);
+        close(fout);
         fprintf(stderr, "Cannot open file %s to write.", output_path);
-        return 1;
+        return ERROR_FAILURE;
     }
 
     int rc = 0;

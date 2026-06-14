@@ -33,7 +33,7 @@ static int huffman_tree_compare(const void *a, const void *b) {
 HuffmanTree *huffman_tree_create() {
     HuffmanTree *tree_ptr = calloc(1, sizeof(HuffmanTree));
     if (tree_ptr == NULL) {
-        errno = ERROR_ALLOC;
+        errno = ENOMEM;
         return NULL;
     }
 

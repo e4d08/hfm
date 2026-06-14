@@ -5,11 +5,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define BYTE_LENGTH 8
-
-#define ERROR_INVALID_OPTIONS 2
-#define ERROR_ALLOC 3
-
 enum HUFFMAN_MODE { MODE_COMPRESS, MODE_DECOMPRESS };
 
 /**

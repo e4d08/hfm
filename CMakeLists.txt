@@ -20,6 +20,14 @@ if(ENABLE_COVERAGE)
     add_link_options(--coverage)
 endif()
 
+option(ENABLE_SANITIZERS "Enable Address and Undefined Behavior sanitizers" OFF)
+if(ENABLE_SANITIZERS)
+    if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+        add_compile_options(-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer)
+        add_link_options(-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer)
+    endif()
+endif()
+
 add_compile_options(-Wall -Wextra -pedantic -Wshadow -Wconversion -Werror)
 
 add_subdirectory(src)

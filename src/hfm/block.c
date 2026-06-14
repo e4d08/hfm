@@ -23,7 +23,7 @@ void Block_start_stream(Block *block, uint8_t *buf) {
 }
 
 int Block_write_bit(Block *block, uint8_t bit) {
-    block->cur_byte |= (bit << block->cur_len);
+    block->cur_byte |= (uint8_t)(bit << block->cur_len);
     block->cur_len += 1;
 
     if (block->cur_len == 8) {
@@ -43,8 +43,8 @@ int Block_end_stream(Block *block) {
 
 void BlockHeader_read(uint8_t *src, BlockHeader *header) {
     header->flags = src[0];
-    header->block_size = (src[1] << 8) | src[2];
-    header->data_size = (src[3] << 8) | src[4];
+    header->block_size = (uint16_t)(src[1] << 8) | src[2];
+    header->data_size = (uint16_t)(src[3] << 8) | src[4];
 }
 
 void BlockHeader_write(BlockHeader *header, uint8_t *dest) {
