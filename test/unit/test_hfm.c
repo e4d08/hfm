@@ -242,6 +242,26 @@ void test_compress_decompress_binary_data(void)
     TEST_ASSERT_EQUAL_HEX8_ARRAY(source, decompressed, n);
 }
 
+void test_compress_decompress_inflated(void)
+{
+    uint8_t   source[256];
+    uint8_t   compressed[BLOCK_SIZE];
+    uint8_t   decompressed[256];
+    CodeTable table  = { 0 };
+    BlockHeader header = { 0 };
+
+    for (int i = 0; i < 256; ++i)
+        source[i] = (uint8_t)i;
+
+    uint16_t comp_size = hfm_compress_block(table, &header, source, compressed, 256);
+    TEST_ASSERT_GREATER_THAN(0, comp_size);
+    TEST_ASSERT_BITS(BLOCK_UNCOMPRESSED, BLOCK_UNCOMPRESSED, header.flags);
+
+    uint16_t decomp_size = hfm_decompress_block(table, &header, compressed, decompressed);
+    TEST_ASSERT_EQUAL(256, decomp_size);
+    TEST_ASSERT_EQUAL_HEX8_ARRAY(source, decompressed, 256);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -262,6 +282,7 @@ int main(void)
     RUN_TEST(test_compress_decompress_single_byte);
     RUN_TEST(test_compress_header_data_size_matches_input);
     RUN_TEST(test_compress_decompress_binary_data);
+    RUN_TEST(test_compress_decompress_inflated);
 
     return UNITY_END();
 }
