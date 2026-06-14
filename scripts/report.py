@@ -10,7 +10,6 @@ import statistics
 def get_file_size(filepath):
     """Return size of file in bytes, or None if file doesn't exist."""
     if filepath and Path(filepath).exists():
-        print(filepath, Path(filepath).stat().st_size)
         return Path(filepath).stat().st_size
     return None
 

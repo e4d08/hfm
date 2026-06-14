@@ -3,5 +3,5 @@
 BASEDIR=$(realpath "$(dirname "$0")")
 ROOTDIR=$(realpath "$BASEDIR/..")
 
-cmake -S "$ROOTDIR" -B "$ROOTDIR/build"
-cmake --build "$ROOTDIR/build"
+cmake -S "$ROOTDIR" -B "$ROOTDIR/build" -DCMAKE_BUILD_TYPE=Release
+cmake --build "$ROOTDIR/build" --config Release
