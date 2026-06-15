@@ -117,8 +117,5 @@ void huffman_tree_build(tree_weight_t *weights, HuffmanTree *dest) {
 }
 
 inline bool huffman_tree_is_leaf(HuffmanTree *tree) {
-    if (tree->left_child == NULL && tree->right_child == NULL) {
-        return true;
-    }
-    return false;
+    return tree->left_child == NULL && tree->right_child == NULL;
 }
