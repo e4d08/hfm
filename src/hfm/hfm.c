@@ -61,15 +61,15 @@ uint16_t hfm_compress_block(CodeTable table,
 
     Block block;
 
-    Block_start_stream(&block, dest);
+    block_start_stream(&block, dest);
     for (uint16_t i = 0; i < n; ++i) {
         HfmCode code = codes[source[i]];
         for (int j = code.length - 1; j >= 0; --j) {
             const uint8_t bit = (code.code >> j) & 1;
-            Block_write_bit(&block, bit);
+            block_write_bit(&block, bit);
         }
     }
-    Block_end_stream(&block);
+    block_end_stream(&block);
 
     header->flags = 0x0;
     header->block_size = block.pos;

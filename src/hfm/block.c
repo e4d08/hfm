@@ -1,7 +1,7 @@
 #include "block.h"
 #include <string.h>
 
-static int Block_flush_byte(Block *block) {
+static int block_flush_byte(Block *block) {
     if (block->pos >= BLOCK_SIZE) {
         return ERR_BLOCK_END;
     }
@@ -14,7 +14,7 @@ static int Block_flush_byte(Block *block) {
     return 0;
 }
 
-void Block_start_stream(Block *block, uint8_t *buf) {
+void block_start_stream(Block *block, uint8_t *buf) {
     block->buf = buf;
     memset(buf, 0, BLOCK_SIZE);
     block->pos = 0;
@@ -22,32 +22,32 @@ void Block_start_stream(Block *block, uint8_t *buf) {
     block->cur_len = 0;
 }
 
-int Block_write_bit(Block *block, uint8_t bit) {
+int block_write_bit(Block *block, uint8_t bit) {
     block->cur_byte |= (uint8_t)(bit << block->cur_len);
     block->cur_len += 1;
 
     if (block->cur_len == 8) {
-        return Block_flush_byte(block);
+        return block_flush_byte(block);
     }
 
     return 0;
 }
 
-int Block_end_stream(Block *block) {
+int block_end_stream(Block *block) {
     if (block->cur_len != 0) {
-        return Block_flush_byte(block);
+        return block_flush_byte(block);
     }
 
     return 0;
 }
 
-void BlockHeader_read(uint8_t *src, BlockHeader *header) {
+void block_header_read(uint8_t *src, BlockHeader *header) {
     header->flags = src[0];
     header->block_size = (uint16_t)(src[1] << 8) | src[2];
     header->data_size = (uint16_t)(src[3] << 8) | src[4];
 }
 
-void BlockHeader_write(BlockHeader *header, uint8_t *dest) {
+void block_header_write(BlockHeader *header, uint8_t *dest) {
     dest[0] = header->flags;
     dest[1] = (uint8_t)(header->block_size >> 8);
     dest[2] = (uint8_t)(header->block_size);

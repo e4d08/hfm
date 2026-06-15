@@ -29,7 +29,7 @@ static int compress_file(int fin, int fout) {
 
         uint16_t block_size =
             hfm_compress_block(table, &header, in_buf, out_buf, (uint16_t)n);
-        BlockHeader_write(&header, header_buf);
+        block_header_write(&header, header_buf);
         write_exact(fout, header_buf, BLOCK_HEADER_SIZE);
 
         if (header.flags & BLOCK_UNCOMPRESSED) {
@@ -66,7 +66,7 @@ static int decompress_file(int fin, int fout) {
             fprintf(stderr, "Cannot read block header from input file\n");
             return ERROR_FAILURE;
         }
-        BlockHeader_read(header_buf, &header);
+        block_header_read(header_buf, &header);
 
         if (header.flags & BLOCK_UNCOMPRESSED) {
             read_exact(fin, in_buf, header.data_size);

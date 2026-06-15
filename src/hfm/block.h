@@ -21,7 +21,7 @@ typedef uint16_t CodeTable[ALPHABET_SIZE];
  * `cur_byte` is a buffer to represent current byte in memory.
  * `cur_len` is length of `cur_byte` (amount of written bits, up to 7).
  */
-typedef struct Block_s {
+typedef struct block_s {
     uint8_t *buf;
     uint16_t pos;
     uint8_t cur_byte;
@@ -43,26 +43,26 @@ typedef struct BlockHeader_s {
 /**
  * Initialize `block` with start values and set its buffer to `buf`.
  */
-extern void Block_start_stream(Block *block, uint8_t *buf);
+extern void block_start_stream(Block *block, uint8_t *buf);
 
 /**
  * Write least significant bit of `bit` to `block`.
  */
-extern int Block_write_bit(Block *block, uint8_t bit);
+extern int block_write_bit(Block *block, uint8_t bit);
 
 /**
  * Flush last byte of `block` to output buffer if it is not empty.
  */
-extern int Block_end_stream(Block *block);
+extern int block_end_stream(Block *block);
 
 /**
  * Serialize `header` to buffer `dest`.
  */
-extern void BlockHeader_write(BlockHeader *header, uint8_t *dest);
+extern void block_header_write(BlockHeader *header, uint8_t *dest);
 
 /**
  * Read from buffer `src` to `header`.
  */
-extern void BlockHeader_read(uint8_t *src, BlockHeader *header);
+extern void block_header_read(uint8_t *src, BlockHeader *header);
 
 #endif // BLOCK_H
