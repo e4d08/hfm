@@ -5,7 +5,6 @@
 
 #define BLOCK_SIZE (65535)  // Size of blocks (64 KiB - 1)
 #define ALPHABET_SIZE (256) // 8-bit compression (1-byte)
-#define ERR_BLOCK_END (1)
 #define BLOCK_HEADER_SIZE (5)
 
 enum BLOCK_FLAGS { BLOCK_UNCOMPRESSED = 1 };
@@ -48,12 +47,12 @@ extern void block_start_stream(Block *block, uint8_t *buf);
 /**
  * Write least significant bit of `bit` to `block`.
  */
-extern int block_write_bit(Block *block, uint8_t bit);
+extern void block_write_bit(Block *block, uint8_t bit);
 
 /**
  * Flush last byte of `block` to output buffer if it is not empty.
  */
-extern int block_end_stream(Block *block);
+extern void block_end_stream(Block *block);
 
 /**
  * Serialize `header` to buffer `dest`.

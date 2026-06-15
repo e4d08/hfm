@@ -50,6 +50,10 @@ uint16_t hfm_compress_block(CodeTable table,
     }
 
     HuffmanTree *huffman_tree = huffman_tree_create();
+    if (huffman_tree == NULL) {
+        return 0;
+    }
+
     huffman_tree_build(table, huffman_tree);
 
     HfmCode codes[ALPHABET_SIZE];
@@ -88,6 +92,9 @@ uint16_t hfm_decompress_block(CodeTable table,
     uint8_t *source,
     uint8_t *dest) {
     HuffmanTree *huffman_tree = huffman_tree_create();
+    if (huffman_tree == NULL) {
+        return 0;
+    }
     huffman_tree_build(table, huffman_tree);
 
     uint16_t pos = 0;

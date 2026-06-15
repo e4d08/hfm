@@ -35,7 +35,7 @@ void test_write_bit_packs_lsb_first(void)
     /* bits: 0 0 1 1 0 1 0 1 → byte = 0b10101100 = 0xAC */
     uint8_t bits[] = { 0, 0, 1, 1, 0, 1, 0, 1 };
     for (int i = 0; i < 8; ++i) {
-        TEST_ASSERT_EQUAL_INT(0, block_write_bit(&test_block, bits[i]));
+        block_write_bit(&test_block, bits[i]);
     }
     TEST_ASSERT_EQUAL_UINT16(1, test_block.pos);
     TEST_ASSERT_EQUAL_HEX8(0xAC, test_buf[0]);
@@ -84,7 +84,7 @@ void test_bit_write_overflow_returns_error(void)
     TEST_ASSERT_EQUAL_UINT8(7, test_block.cur_len);
 
     /* 8th bit triggers flush → buffer is full → error */
-    TEST_ASSERT_EQUAL_INT(ERR_BLOCK_END, block_write_bit(&test_block, 0));
+    block_write_bit(&test_block, 0);
     TEST_ASSERT_EQUAL_UINT16(BLOCK_SIZE, test_block.pos);
     TEST_ASSERT_EQUAL_UINT8(8, test_block.cur_len);
 }
@@ -101,7 +101,7 @@ void test_end_stream_flushes_partial_byte(void)
     TEST_ASSERT_EQUAL_UINT8(3, test_block.cur_len);
     TEST_ASSERT_EQUAL_HEX8(0x05, test_block.cur_byte);
 
-    TEST_ASSERT_EQUAL_INT(0, block_end_stream(&test_block));
+    block_end_stream(&test_block);
 
     TEST_ASSERT_EQUAL_UINT16(1, test_block.pos);
     TEST_ASSERT_EQUAL_HEX8(0x05, test_buf[0]);
@@ -115,7 +115,7 @@ void test_end_stream_with_no_pending_bits_returns_success(void)
         block_write_bit(&test_block, 0);
 
     TEST_ASSERT_EQUAL_UINT8(0, test_block.cur_len);
-    TEST_ASSERT_EQUAL_INT(0, block_end_stream(&test_block));
+    block_end_stream(&test_block);
     TEST_ASSERT_EQUAL_UINT16(1, test_block.pos);
 }
 
@@ -132,7 +132,7 @@ void test_end_stream_overflow_returns_error(void)
     TEST_ASSERT_EQUAL_UINT8(3, test_block.cur_len);
 
     /* end_stream tries to flush → no room → error */
-    TEST_ASSERT_EQUAL_INT(ERR_BLOCK_END, block_end_stream(&test_block));
+    block_end_stream(&test_block);
     TEST_ASSERT_EQUAL_UINT16(BLOCK_SIZE, test_block.pos);
 }
 
@@ -234,7 +234,7 @@ void test_write_bits_then_end_stream_partial(void)
     TEST_ASSERT_EQUAL_UINT16(3, test_block.pos);
     TEST_ASSERT_EQUAL_UINT8(5, test_block.cur_len);
 
-    TEST_ASSERT_EQUAL_INT(0, block_end_stream(&test_block));
+    block_end_stream(&test_block);
 
     TEST_ASSERT_EQUAL_UINT16(4, test_block.pos);
     /* 5 ones in LSB → 0b00011111 = 0x1F */

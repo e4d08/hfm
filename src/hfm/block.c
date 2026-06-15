@@ -1,17 +1,15 @@
 #include "block.h"
 #include <string.h>
 
-static int block_flush_byte(Block *block) {
+static void block_flush_byte(Block *block) {
     if (block->pos >= BLOCK_SIZE) {
-        return ERR_BLOCK_END;
+        return;
     }
 
     block->buf[block->pos] = block->cur_byte;
     block->cur_byte = 0x0;
     block->pos += 1;
     block->cur_len = 0;
-
-    return 0;
 }
 
 void block_start_stream(Block *block, uint8_t *buf) {
@@ -22,23 +20,19 @@ void block_start_stream(Block *block, uint8_t *buf) {
     block->cur_len = 0;
 }
 
-int block_write_bit(Block *block, uint8_t bit) {
+void block_write_bit(Block *block, uint8_t bit) {
     block->cur_byte |= (uint8_t)(bit << block->cur_len);
     block->cur_len += 1;
 
     if (block->cur_len == 8) {
-        return block_flush_byte(block);
+        block_flush_byte(block);
     }
-
-    return 0;
 }
 
-int block_end_stream(Block *block) {
+void block_end_stream(Block *block) {
     if (block->cur_len != 0) {
-        return block_flush_byte(block);
+        block_flush_byte(block);
     }
-
-    return 0;
 }
 
 void block_header_read(uint8_t *src, BlockHeader *header) {

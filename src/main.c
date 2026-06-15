@@ -29,6 +29,12 @@ static int compress_file(int fin, int fout) {
 
         uint16_t block_size =
             hfm_compress_block(table, &header, in_buf, out_buf, (uint16_t)n);
+
+        if (block_size == 0) {
+            fprintf(stderr, "Error while compressing block\n");
+            return EXIT_FAILURE;
+        }
+
         block_header_write(&header, header_buf);
         write_exact(fout, header_buf, BLOCK_HEADER_SIZE);
 
@@ -78,6 +84,12 @@ static int decompress_file(int fin, int fout) {
         read_exact(fin, in_buf, header.block_size);
         uint16_t result_size =
             hfm_decompress_block(table, &header, in_buf, out_buf);
+
+        if (result_size == 0) {
+            fprintf(stderr, "Error while decompressing block\n");
+            return EXIT_FAILURE;
+        }
+
         write_exact(fout, out_buf, result_size);
     }
 
