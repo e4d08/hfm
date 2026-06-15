@@ -6,6 +6,18 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+/**
+ * Struct for code. `Code` is an actual code which is stored
+ * as least significant bits of an uint32, and `length` is
+ * the size of code which is amount of those bits. The limit
+ * of code length is therefore 32, which is sufficent for example
+ * for blocks of size 65535 and alphabet of size 256.
+ */
+typedef struct HfmCode_s {
+    uint32_t code;
+    uint8_t length;
+} HfmCode;
+
 static void
 get_codes_from_tree(HuffmanTree *tree, HfmCode *codes, HfmCode cur_code) {
     if (tree == NULL) {

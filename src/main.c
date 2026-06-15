@@ -15,10 +15,12 @@
     if (write(fd, buf, n) != n) \
         return ERROR_FAILURE;
 
+enum HUFFMAN_MODE { MODE_COMPRESS, MODE_DECOMPRESS };
+
 static int compress_file(int fin, int fout) {
     uint8_t in_buf[BLOCK_SIZE];
     ssize_t n = read(fin, in_buf, BLOCK_SIZE);
-    
+
     while (n > 0) {
         uint8_t out_buf[BLOCK_SIZE];
         uint8_t header_buf[BLOCK_HEADER_SIZE];
