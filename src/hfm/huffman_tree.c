@@ -49,8 +49,6 @@ void huffman_tree_free_rec(HuffmanTree *tree) {
 }
 
 void huffman_tree_build(tree_weight_t *weights, HuffmanTree *dest) {
-    // ALPHABET_SIZE * 2 to prevent out-of-bounds
-    // TODO
     const int K = ALPHABET_SIZE * 2;
     HuffmanTree *tree_array1[K], *tree_array2[K];
     for (int i = 0; i < K; ++i) {
