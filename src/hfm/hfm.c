@@ -29,18 +29,18 @@ get_codes_from_tree(HuffmanTree *tree, HfmCode *codes, HfmCode cur_code) {
     }
 
     HfmCode left_code = {.code = cur_code.code << 1,
-                         .length = cur_code.length + 1};
+        .length = cur_code.length + 1};
     HfmCode right_code = {.code = (cur_code.code << 1) | 1,
-                          .length = cur_code.length + 1};
+        .length = cur_code.length + 1};
     get_codes_from_tree(tree->left_child, codes, left_code);
     get_codes_from_tree(tree->right_child, codes, right_code);
 }
 
 uint16_t hfm_compress_block(CodeTable table,
-                            BlockHeader *header,
-                            uint8_t *source,
-                            uint8_t *dest,
-                            uint16_t n) {
+    BlockHeader *header,
+    uint8_t *source,
+    uint8_t *dest,
+    uint16_t n) {
     for (int i = 0; i < ALPHABET_SIZE; ++i) {
         table[i] = 0;
     }
@@ -84,9 +84,9 @@ uint16_t hfm_compress_block(CodeTable table,
 }
 
 uint16_t hfm_decompress_block(CodeTable table,
-                              BlockHeader *header,
-                              uint8_t *source,
-                              uint8_t *dest) {
+    BlockHeader *header,
+    uint8_t *source,
+    uint8_t *dest) {
     HuffmanTree *huffman_tree = huffman_tree_create();
     huffman_tree_build(table, huffman_tree);
 

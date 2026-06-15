@@ -13,10 +13,10 @@
  * Returns compressed data size.
  */
 extern uint16_t hfm_compress_block(CodeTable table,
-                                   BlockHeader *header,
-                                   uint8_t *source,
-                                   uint8_t *dest,
-                                   uint16_t n);
+    BlockHeader *header,
+    uint8_t *source,
+    uint8_t *dest,
+    uint16_t n);
 
 /**
  * Decompress the block located in `source` using `table`
@@ -24,8 +24,8 @@ extern uint16_t hfm_compress_block(CodeTable table,
  * Writes result to `dest`.
  */
 extern uint16_t hfm_decompress_block(CodeTable table,
-                                     BlockHeader *header,
-                                     uint8_t *source,
-                                     uint8_t *dest);
+    BlockHeader *header,
+    uint8_t *source,
+    uint8_t *dest);
 
 #endif // HFM_H

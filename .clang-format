@@ -16,7 +16,7 @@ BraceWrapping:
 IndentCaseLabels: false
 IndentCaseBlocks: false
 ColumnLimit: 80
-AlignAfterOpenBracket: Align
+AlignAfterOpenBracket: false
 AllowAllParametersOfDeclarationOnNextLine: false
 BinPackArguments: false
 BinPackParameters: false
